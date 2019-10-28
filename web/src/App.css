@@ -1,0 +1,109 @@
+body {
+  font: 14px "Century Gothic", Futura, sans-serif;
+  background: #3f4654;
+  color: white;
+}
+
+body, html {
+  margin: 0;
+  height: 100%;
+}
+
+#root {
+  padding: 15px;
+}
+
+.board-row:after {
+  clear: both;
+  content: "";
+  display: table;
+}
+
+.status {
+  margin-bottom: 10px;
+}
+
+.square {
+  background: none;
+  border: 1px solid white;
+  color: white;
+  float: left;
+  font-size: 50px;
+  font-weight: bold;
+  line-height: 100px;
+  height: 100px;
+  margin-right: -1px;
+  margin-top: -1px;
+  padding: 0;
+  text-align: center;
+  width: 100px;
+  cursor: pointer;
+}
+
+.square:hover {
+  background: rgba(255,255,255,0.2)
+}
+
+.square:focus {
+  outline: none;
+}
+
+.kbd-navigation .square:focus {
+  background: #ddd;
+}
+
+.game {
+  display: flex;
+  flex-direction: row;
+  padding-top: 56px;
+}
+
+.game > * {
+  margin-right: 100px;
+}
+
+.game-nav {
+  position: fixed;
+  width: 100%;
+  background: #495060;  
+  padding: 15px;
+  left: 0;
+  top: 0;
+}
+
+.game-start-button {
+  background: none;
+  border: 1px solid white;
+  color: white;
+  padding: 5px 7.5px;
+  cursor: pointer;
+  outline: none;
+}
+
+.game-stat > ul {
+  list-style-type: none;
+  padding: 0;
+  margin: 0;
+}
+
+.game-stat > ul > li{
+  display: flex;
+  flex-direction: column;
+  padding-bottom: 10px;
+  margin-bottom: 15px;
+  border-bottom: 1px solid rgba(255,255,255,0.1)
+}
+
+
+.game-stat > ul > li > span.date {
+  font-size: 11px;
+  margin-bottom: 5px;
+}
+
+.game-info {
+  margin-bottom: 7.5px;
+}
+
+h2 {
+  margin: 0;
+}
