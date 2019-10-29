@@ -16,15 +16,31 @@ app.use(bodyParser())
 const history = []
 
 /** IMPLEMENT YOUR ROUTER BELOW */
-app.get('/', (req, res) => {
-  res.json({ history })
+app.get('/game', (req, res) => {
+  res.json(history.sort((a, b) => new Date(b.date) - new Date(a.date)))
 })
 
-app.post('/push-game-history', (req, res) => {
+app.get('/game-analysis', (req, res) => {
+  let x = 0, o = 0;
+  history.map(game => {
+    if (game.winner === 'X') {
+      x++
+    } else if (game.winner === 'O') {
+      o++
+    }
+  })
+
+  res.json({
+    x,
+    o
+  })
+})
+
+app.post('/game', (req, res) => {
   history.push({
-    date: new Date,
+    date: new Date(),
     winner: req.body.winner,
-    history: req.body.history
+    squares: req.body.squares
   })
 
   res.send(true)
