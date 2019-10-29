@@ -1,34 +1,54 @@
-import React from 'react'
+/**
+ * components/Game.jsx
+ * 
+ * Ventana Tech Services
+ * 
+ * Backend Exam
+ * 
+ * 2019
+ */
+import React, { useState, useEffect } from 'react'
 import axios from 'axios'
 
+/** Components ================================================================================== */
 import Board from './Board'
-import Stat from './Stat'
+import Statistics from './Statistics'
 
-export default class Game extends React.Component {
-  state = {
-    history: [
-      {
-        squares: Array(9).fill(null)
-      }
-    ],
-    gameHistory: [],
-    stepNumber: 0,
-    gameStarted: true,
-    xIsNext: true
-  }
+/** <Square /> ================================================================================== */
+export default () => {
+  const [game, setGame] = useState([{ squares: Array(9).fill(null) }])
+  const [gameStarted, setGameStarted ] = useState(true) 
+  const [history, setHistory] = useState([])
+  const [stepNumber, setStepNumber] = useState(0)
+  const [winRates, setWinRates] = useState([])
+  const [xIsNext, setXIsNext] = useState(true)
+  const current = game[stepNumber] 
 
-  componentDidMount () {
-    this.getGameHistory()
-  }
+  useEffect(() => {
+    fetchHistory()
+  }, [])
 
-  getGameHistory = () => {
-    axios.get('http://localhost:4000')
-      .then(({ data }) => {
-        this.setState({ gameHistory: data.history })
+  /**  AJAX Related ============================================================================= */
+  function fetchHistory () {
+    axios.get(`${process.env.REACT_APP_API_URL}/game`)
+      .then((res) => {
+        setHistory(res.data)
+      })
+    axios.get(`${process.env.REACT_APP_API_URL}/game-analysis`)
+      .then((res) => {
+        setWinRates(res.data)
       })
   }
 
-  calculateWinner = squares => {
+  function postGame (game) {
+    axios.post(`${process.env.REACT_APP_API_URL}/game`, game).then(() => {
+      setGameStarted(false)
+      fetchHistory()
+    })
+  }
+
+  /** Business Logic ============================================================================ */
+  const calculateWinner = squares => {
     const lines = [
       [0, 1, 2],
       [3, 4, 5],
@@ -38,127 +58,101 @@ export default class Game extends React.Component {
       [2, 5, 8],
       [0, 4, 8],
       [2, 4, 6]
-    ];
+    ]
 
     for (let i = 0; i < lines.length; i++) {
-      const [a, b, c] = lines[i];
+      const [a, b, c] = lines[i]
       if (squares[a] && squares[a] === squares[b] && squares[a] === squares[c]) {
 
-        if (this.state.gameStarted) {
-          axios.post('http://localhost:4000/push-game-history', {
+        if (gameStarted) {
+          postGame({
             winner: squares[a],
-            history: squares
-          }).then(() => {
-            this.getGameHistory()
-            this.setState({
-              gameStarted: false
-            })
+            squares
           })
         }        
         
-        return squares[a];
+        return squares[a]
       }
     }
 
-    if (this.state.stepNumber === 9 && this.state.gameStarted) {      
-      axios.post('http://localhost:4000/push-game-history', {
+    if (stepNumber === 9 && gameStarted) {      
+      postGame({
         winner: null,
-        history: squares
-      }).then(() => {
-        this.getGameHistory()
-        this.setState({
-          gameStarted: false
-        })
+        squares
       })
     }
 
-    return null;
+    return null
   }
 
-  handleClick(i) {
-    const history = this.state.history.slice(0, this.state.stepNumber + 1);
-    const current = history[history.length - 1];
-    const squares = current.squares.slice();
-
-    if (this.calculateWinner(squares) || squares[i]) {
-      return;
-    }
-    squares[i] = this.state.xIsNext ? "X" : "O";
-    this.setState({
-      history: history.concat([
-        {
-          squares: squares
-        }
-      ]),
-      stepNumber: history.length,
-      xIsNext: !this.state.xIsNext
-    });
-  }
-
-  jumpTo(step) {
-    this.setState({
-      stepNumber: step,
-      xIsNext: (step % 2) === 0
-    });
-  }
-
-  startNewGame = () => {
-    this.setState({
-      history: [
-        {
-          squares: Array(9).fill(null)
-        }
-      ],
-      stepNumber: 0,
-      gameStarted: true,
-      xIsNext: true
-    })
-  }
-
-  selectPreviousGame = (history) => {
-    this.setState({ history })
-  }
-
-  render() {
-    const gameHistory = this.state.gameHistory
-    const history = this.state.history;    
-    const current = history[this.state.stepNumber];
-    const winner = this.calculateWinner(current.squares);
-
-    let status;
-    if (winner) {
-      status = "Winner: " + winner;
-    } else {
-      status = "Next player: " + (this.state.xIsNext ? "X" : "O");
-
-      if (this.state.stepNumber === 9) {
-        status = "It is a tie!"
+  function reset () {
+    setGame([
+      {
+        squares: Array(9).fill(null)
       }
-    }    
-
-    return <>
-      <div className="game-nav">
-        <button 
-          className="game-start-button"
-          onClick={this.startNewGame}
-        >
-          New Game
-        </button>
-      </div>
-      <div className="game">        
-        <div className="game-stat">                    
-          <Stat history={gameHistory}/>
-        </div>
-        <div className="game-board">
-          <div className="game-info">
-            <div>{status}</div>
-          </div>
-          <Board
-            squares={current.squares}
-            onClick={i => this.handleClick(i)}
-          />
-        </div>        
-      </div>
-    </>;
+    ])
+    setStepNumber(0)
+    setXIsNext(true)
+    setGameStarted(true)
   }
+
+  /** Event Handlers  =========================================================================== */
+  function onSquareClick (i) {
+    const _game = game.slice(0, stepNumber + 1)
+    const current = game[game.length - 1]
+    const squares = current.squares.slice()
+
+    if (calculateWinner(squares) || squares[i]) {
+      return
+    }
+
+    squares[i] = xIsNext ? 'X' : 'O'
+
+    setGame(_game.concat([ { squares } ]))
+    setStepNumber(_game.length)
+    setXIsNext(!xIsNext)
+  }
+  
+
+  /** Render  =================================================================================== */
+  const winner = calculateWinner(current.squares)
+
+  let status
+  if (winner) {
+    status = 'Winner: ' + winner
+  } else {
+    status = 'Next player: ' + (xIsNext ? 'X' : 'O')
+
+    if (stepNumber === 9) {
+      status = 'It is a tie!'
+    }
+  } 
+
+  return <>
+    <div className='game-nav'>
+      <button 
+        className='game-start-button'
+        onClick={reset}
+      >
+        New Game
+      </button>
+    </div>
+    <div className='game'>        
+      <div className='game-stat'>                    
+        <Statistics 
+          history={history}
+          winRates={winRates}
+        />
+      </div>
+      <div className='game-board'>
+        <div className='game-info'>
+          <h2>{status}</h2>
+        </div>
+        <Board
+          squares={current.squares}
+          onClick={i => onSquareClick(i)}
+        />
+      </div>        
+    </div>
+  </>
 }

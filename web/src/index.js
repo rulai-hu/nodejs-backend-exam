@@ -1,8 +1,12 @@
-import React from 'react';
-import ReactDOM from 'react-dom';
-import './index.css';
-import App from './App';
-import * as serviceWorker from './serviceWorker';
+import React from 'react'
+import ReactDOM from 'react-dom'
+import * as serviceWorker from './serviceWorker'
+
+/** Components ================================================================================== */
+import './index.css'
+import App from './App'
+
+require('dotenv').config()
 
 ReactDOM.render(<App />, document.getElementById('root'));
 

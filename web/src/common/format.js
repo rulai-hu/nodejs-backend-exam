@@ -1,26 +1,3 @@
-import React from 'react'
-
-
-export default function Stat (props) {
-  const { history } = props
-  return <>
-    <ul>
-      {
-        (() => {
-          if (history.length === 0 ) {
-            return <h2>No games yet!</h2>
-          } else {
-            return history.map((game, key) => <li key={key}>
-              <span className='date'>{formatDate(game.date)}</span>
-              <span className='winner'>Winner: <b>{game.winner || '-'}</b></span>
-            </li>)
-          }
-        })()        
-      }
-    </ul>
-  </>
-}
-
 export const MONTH_NAMES = [
   'Jan',
   'Feb',

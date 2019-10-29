@@ -1,9 +1,21 @@
+/**
+ * components/Square.jsx
+ * 
+ * Ventana Tech Services
+ * 
+ * Backend Exam
+ * 
+ * 2019
+ */
 import React from 'react'
 
-export default function Square(props) {
+/** <Square /> ================================================================================== */
+export default function Square (props) {
+  const { onClick, value } = props
+
   return (
-    <button className="square" onClick={props.onClick}>
-      {props.value}
+    <button className='square' onClick={onClick}>
+      {value}
     </button>
-  );
+  )
 }
