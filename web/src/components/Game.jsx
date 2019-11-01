@@ -45,7 +45,7 @@ export default () => {
     fetch()
   }, [])
 
-  /** Controller ================================================================================ */
+  /** Combined Hooks ============================================================================ */
   const fetch = combineHooks([
     { get: getHistory },
     $gameAnalysis,
