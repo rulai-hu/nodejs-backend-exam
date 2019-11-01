@@ -43,17 +43,17 @@ Create a RESTful backend application for a Tic Tac Toe game in Node.js.
 You can use any database of your choice or files or simply manage your store locally during runtime.
 
 ### Router
-URL                                     | Type   | Function
---------------------------------------- | ------ | -------------
-/game          | GET    | Retrieve games from your store, sort by date, and return an array of games
-/game                      | POST   | Add game to your storage
-/game-analysis                  | GET    | Analyze games and return win rate for 'x' and 'o'
+URL | Type | Function
+--- | ---- | --------
+/game | GET | Retrieve game history from your store, sort by date, and return an array of games
+/game | POST | Add game to your storage and returns game histroy
+/game-analysis | GET | Analyze game history and return win rate for 'x' and 'o'
 
 
 ----
 
 #### game | GET
-Returns array of game object
+Returns array of game object (game history)
 
     [
         ...
@@ -81,4 +81,14 @@ Takes parameter as following object
         squares: String []
     }
 
-Modify object to contain *date* and push to your storage
+Modify object to contain *date* and push to your storage and returns game history.
+
+    [
+        ...
+        {
+            date: Date,
+            winner: String || Null,
+            squares: String []
+        },
+        ...
+    ]
