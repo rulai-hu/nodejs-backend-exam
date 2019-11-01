@@ -1,20 +1,9 @@
-export const MONTH_NAMES = [
-  'Jan',
-  'Feb',
-  'Mar',
-  'Apr',
-  'May',
-  'Jun',
-  'Jul',
-  'Aug',
-  'Sep',
-  'Oct',
-  'Nov',
-  'Dec'
-]
-const PM = 'PM'
-const AM = 'AM'
+/** Constants =================================================================================== */
+export const MONTH_NAMES = ['Jan','Feb','Mar','Apr','May','Jun','Jul','Aug','Sep','Oct','Nov','Dec']
+export const PM = 'PM'
+export const AM = 'AM'
 
+/** formatDate ================================================================================== */
 export const formatDate = (dateString, display) => {
   const date = new Date(dateString)
   const year = date.getFullYear()

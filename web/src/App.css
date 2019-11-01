@@ -81,10 +81,14 @@ body, html {
   outline: none;
 }
 
+.game-stat {
+  min-width: 110px;
+}
+
 .game-stat > ul {
   list-style-type: none;
   padding: 0;
-  margin: 0;
+  margin: 0;  
 }
 
 .game-stat > ul > li{

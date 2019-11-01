@@ -1,3 +1,12 @@
+/**
+ * components/Statistics.jsx
+ * 
+ * Ventana Tech Services
+ * 
+ * Backend Exam
+ * 
+ * 2019
+ */
 import React from 'react'
 
 /** Common ====================================================================================== */
