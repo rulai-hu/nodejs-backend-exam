@@ -43,7 +43,7 @@ app.post('/game', (req, res) => {
     squares: req.body.squares
   })
 
-  res.send(true)
+  res.json(history.sort((a, b) => new Date(b.date) - new Date(a.date)))
 })
 
 app.listen(port, () => console.log(`Example app listening on port ${port}!`))
