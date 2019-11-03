@@ -1,4 +1,4 @@
-# Tic Tac Toe Application (backend)
+# Backend Exam 1 - Tic Tac Toe Application
 
 ## Goal
 Create a RESTful backend application for a Tic Tac Toe game in Node.js.
