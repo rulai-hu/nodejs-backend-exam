@@ -1,7 +1,7 @@
 # Node.js Backend Exam / Tic Tac Toe Application
 
 ## Goal
-Create a RESTful backend application for a Tic Tac Toe game in Node.js.
+Create a `RESTful` backend application for a Tic Tac Toe game in Node.js.
 
 ## Getting Started
 ### Run Frontend Application
