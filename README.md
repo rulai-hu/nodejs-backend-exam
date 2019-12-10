@@ -22,7 +22,6 @@ Create a RESTful backend application for a Tic Tac Toe game in Node.js.
 
 1. Implement all of your work in `./api/`
 1. Run your server on port `4000` (frontend is sending requests to `http://localhost:4000`)
-1. Document how to install and run your application
 
 ## Specifications
 
